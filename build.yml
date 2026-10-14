@@ -1,0 +1,17 @@
+name: Build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - run: unzip -o StockShop.zip -d build
+      - run: mvn -B -f build/StockShop/pom.xml package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: StockShop-jar
+          path: build/StockShop/target/StockShop-*.jar
